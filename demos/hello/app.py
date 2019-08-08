@@ -1,11 +1,10 @@
 from flask import Flask
 
-import config
+from config import config
 
 app = Flask(__name__)
 
 # 配置文件引入的几种方式
-# app.config.from_pyfile('sayhello/config.py')
 app.config.from_object(config['development'])  # 获取相应的配置类
 
 
