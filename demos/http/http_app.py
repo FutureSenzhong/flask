@@ -10,5 +10,11 @@ def hello():
     return '<h1>Hello, %s!<h1>' % name
 
 
+# 钩子函数
+@app.before_request
+def do_something():
+    pass
+
+
 if __name__ == '__main__':
     app.run()
