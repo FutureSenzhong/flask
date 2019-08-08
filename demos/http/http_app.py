@@ -1,5 +1,4 @@
-from flask import Flask, request
-
+from flask import Flask, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -14,6 +13,12 @@ def hello():
 @app.before_request
 def do_something():
     pass
+
+
+# 重定向
+@app.route('/')
+def redirect():
+    return redirect(url_for('hello'))
 
 
 if __name__ == '__main__':
