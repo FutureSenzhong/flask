@@ -9,6 +9,7 @@ def hello():
     return '</h1>hello world</h1>'
 
 
+# 绑定多个路由
 @app.route('/hi')
 @app.route('/hello')
 def say_hello():
