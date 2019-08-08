@@ -1,11 +1,11 @@
 from flask import Flask
 
-from config import config
+import config
 
 app = Flask(__name__)
 
 # 配置文件引入的几种方式
-app.config.from_object(config['development'])  # 获取相应的配置类
+# app.config.from_object(config.config['development'])  # 获取相应的配置类
 
 
 @app.route('/')
