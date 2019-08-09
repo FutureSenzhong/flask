@@ -79,7 +79,12 @@ def admin():
     return 'Welcome to admin page.'
 
 
-
+# 登出用户
+@app.route('/logout')
+def logout():
+    if 'logged_in' in session:
+        session.pop('logged_in')
+    return redirect(url_for('hello'))
 
 
 
