@@ -1,12 +1,23 @@
+import os
+
 from flask import Flask, request, redirect, url_for, abort, make_response, session
 
 app = Flask(__name__)
+app.secret_key = os.getenv('SECRET_KEY', 'dasdadadsasd')
 
 
 @app.route('/hello', methods=['GET', 'POST'])
 def hello():
-    name = request.args.get('name', 'Flask')  # 获取查询参数name的值
-    return '<h1>Hello, %s!<h1>' % name
+    name = request.args.get('name')
+    if name is None:
+        name = request.cookies.get('name', 'Human')
+    response = '<h1>Hello, %s!</h1>' % name
+    # 根据用户认证状态返回不同的内容
+    if 'logged_in' in session:
+        response += '[Authenticated]'
+    else:
+        response += '[Not Authenticated]'
+    return response
 
 
 # 钩子函数
@@ -60,9 +71,12 @@ def login():
     return redirect(url_for('hello'))
 
 
-
-
-
+# 管理页面查看是否用户已经登陆
+@app.route('/admin')
+def admin():
+    if 'logged_in' not in session:
+        abort(403)
+    return 'Welcome to admin page.'
 
 
 
