@@ -44,7 +44,26 @@ def bar():
     return 'I am global bar.'
 
 
+# 在页面中加载网址静态资源
+# 1.使用静态url
+# 2.使用cdn加速连接引用
+# 3.使用宏定义
+# {% macro static_file(type, filename_or_url, local=True) %}
+#     {% if local %}
+#         {% set filename_or_url = url_for('static', filename=filename_or_url)
+# %}
+#     {% endif %}
+#     {% if type == 'css' %}
+#         <link rel="stylesheet" href="{{ filename_or_url }}" type="text/css">
+#     {% elif type == 'js' %}
+#         <script type="text/javascript" src="{{ filename_or_url }}"></script>
+#     {% elif type == 'icon' %}
+#         <link rel="icon" href="{{ filename_or_url }}">
+#     {% endif %}
+# {% endmacro %}
 
+# 调用方式
+# static_file('css', 'css/bootstrap.min.css')
 
 
 
