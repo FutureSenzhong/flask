@@ -93,24 +93,5 @@ def get_name():
     g.name = request.args.get('name')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
     app.run()
