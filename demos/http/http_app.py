@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, abort
 
 app = Flask(__name__)
 
@@ -19,6 +19,12 @@ def do_something():
 @app.route('/')
 def redirect():
     return redirect(url_for('hello'))
+
+
+# 错误处理
+@app.route('/404')
+def not_found():
+    abort(404)
 
 
 if __name__ == '__main__':
