@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, redirect, url_for, abort, make_response, session
+from flask import Flask, request, redirect, url_for, abort, make_response, session, g
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'dasdadadsasd')
@@ -87,7 +87,10 @@ def logout():
     return redirect(url_for('hello'))
 
 
-
+# 上下文全局变量
+@app.before_request
+def get_name():
+    g.name = request.args.get('name')
 
 
 
