@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="utf-8">
 <title>{{ user.username }}'s Watchlist</title>
 </head>
 <body>
 <a href="{{ url_for('index') }}">&larr; Return</a>
+<a>{{bar()}}</a>
 <h2>{{ user.username }}</h2>
 {% if user.bio %}
 <i>{{ user.bio }}</i>
@@ -20,4 +22,8 @@
 {% endfor %}
 </ul>
 </body>
+
+
+
+
 </html>

@@ -33,6 +33,9 @@ def watchlist():
     return render_template('watchlist.html', user=user, movies=movies)
 
 
+@app.template_global()
+def bar():
+    return 'I am global bar.'
 
 
 
