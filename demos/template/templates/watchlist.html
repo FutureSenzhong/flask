@@ -6,8 +6,11 @@
 <title>{{ user.username }}'s Watchlist</title>
 </head>
 <body>
-<a href="{{ url_for('index') }}">&larr; Return</a>
-<a>{{bar()}}</a>
+
+<div><a href="{{ url_for('index') }}">&larr; Return</a></div>
+<div><img src="{{ url_for('static', filename='avatar.jpg') }}"></div>
+<div><a>{{bar()}}</a></div>
+
 <h2>{{ user.username }}</h2>
 {% if user.bio %}
 <i>{{ user.bio }}</i>
