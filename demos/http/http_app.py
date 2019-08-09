@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, abort, make_response
+from flask import Flask, request, redirect, url_for, abort, make_response, session
 
 app = Flask(__name__)
 
@@ -53,8 +53,11 @@ def set_cookie(name):
     return response
 
 
-
-
+# 使用session模拟用户的认证功能
+@app.route('/login')
+def login():
+    session['logged_in'] = True  # 写入
+    return redirect(url_for('hello'))
 
 
 
