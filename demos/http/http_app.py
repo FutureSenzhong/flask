@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, abort
+from flask import Flask, request, redirect, url_for, abort, make_response
 
 app = Flask(__name__)
 
@@ -17,7 +17,7 @@ def do_something():
 
 # 重定向
 @app.route('/')
-def redirect():
+def redirects():
     return redirect(url_for('hello'))
 
 
@@ -25,6 +25,66 @@ def redirect():
 @app.route('/404')
 def not_found():
     abort(404)
+
+
+# 指定数据的MIME类型
+@app.route('/foo')
+def foo():
+    response = make_response({
+        "note": {
+
+            "to": "Peter",
+            "from": "Jane",
+            "heading": "Remider",
+            "body": "Don't forget the party!"
+            }
+        }
+    )
+
+    response.mimetype = 'application/json'
+    return response
+
+
+# 给浏览器设置cookie
+@app.route('/set/<name>')
+def set_cookie(name):
+    response = make_response(redirect(url_for('hello')))
+    response.set_cookie('name', name)
+    return response
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
