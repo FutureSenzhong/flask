@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, redirect, url_for, abort, make_response, session, g, render_template
+from flask import Flask, request, redirect, url_for, abort, make_response, session, g, render_template, flash
 
 app = Flask(__name__, template_folder='./templates')
 app.secret_key = os.getenv('SECRET_KEY', 'dasdadadsasd')
@@ -66,7 +66,11 @@ def bar():
 # static_file('css', 'css/bootstrap.min.css')
 
 
-
+# 页面消息闪现（出现后删除）
+@app.route('/flash')
+def just_flash():
+    flash('通知！有一个消息请注意查看！！！')
+    return redirect(url_for('index'))
 
 
 

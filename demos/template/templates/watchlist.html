@@ -6,9 +6,18 @@
 <title>{{ user.username }}'s Watchlist</title>
 </head>
 <body>
+<div>
+{% for message in get_flashed_messages() %}
+<div class="alert">{{ message }}</div>
+{% endfor %}
+{% block content %}{% endblock %}
+</div>
+
+
+
 
 <div><a href="{{ url_for('index') }}">&larr; Return</a></div>
-<div><img src="{{ url_for('static', filename='avatar.jpg') }}"></div>
+<div><img src="{{ url_for('static', filename='avatar.jpg') }}" width="200px"></div>
 <div><a>{{bar()}}</a></div>
 
 <h2>{{ user.username }}</h2>
