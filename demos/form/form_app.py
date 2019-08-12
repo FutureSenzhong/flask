@@ -16,6 +16,8 @@ app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 # 让Flask-WTF使用WTForms内置的错误消息翻译
 app.config['WTF_I18N_ENABLED'] = False
+# 设置请求报文的最大长度（设置文件上传的大小限制）
+app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024  # 限制为3M大小的文件
 
 
 @app.route('/')

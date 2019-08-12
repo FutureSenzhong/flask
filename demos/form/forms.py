@@ -76,3 +76,9 @@ class FortyTwoForm1(FlaskForm):
 #         if l < self.min or self.max != -1 and l > self.max:
 #             raise ValidationError(self.message)
 # length = Length
+
+# 文件上传
+# CSRF
+# 验证文件类型
+# 验证文件大小
+# 过滤文件名
