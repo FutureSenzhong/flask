@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, MultipleFileField
 from wtforms.validators import DataRequired, Length, ValidationError
 
 
@@ -84,5 +84,18 @@ class FortyTwoForm1(FlaskForm):
 # 验证文件大小
 # 过滤文件名
 class UploadForm(FlaskForm):
+    # 单个上传
     photo = FileField('Upload Image', validators=[FileRequired(), FileAllowed(['jpg', 'jpeg', 'png', 'gif'])])
+
+    # 批量上传
+    # photo = MultipleFileField('Upload Image', validators=[FileRequired(), FileAllowed(['jpg', 'jpeg', 'png', 'gif'])])
+    submit = SubmitField()
+
+
+class MultiUploadForm(FlaskForm):
+    # 单个上传
+    # photo = FileField('Upload Image', validators=[FileRequired(), FileAllowed(['jpg', 'jpeg', 'png', 'gif'])])
+
+    # 批量上传
+    photo = MultipleFileField('Upload Image', validators=[FileRequired(), FileAllowed(['jpg', 'jpeg', 'png', 'gif'])])
     submit = SubmitField()

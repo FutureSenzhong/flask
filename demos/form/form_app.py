@@ -3,8 +3,10 @@ import uuid
 
 from flask import Flask, request, redirect, url_for, abort, make_response, session, g, render_template, flash, \
     get_flashed_messages, send_from_directory
+from flask_wtf.csrf import validate_csrf
+from wtforms import ValidationError
 
-from demos.form.forms import LoginForm, UploadForm
+from demos.form.forms import LoginForm, UploadForm, MultiUploadForm
 
 app = Flask(__name__, template_folder='./templates')
 app.secret_key = os.getenv('SECRET_KEY', 'dasdadadsasd')
@@ -21,6 +23,8 @@ app.config['WTF_I18N_ENABLED'] = False
 app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024  # 限制为3M大小的文件
 # 设置上传文件路劲
 app.config['UPLOAD_PATH'] = os.path.join(app.root_path, 'uploads')
+# 设置文件类型
+app.config['ALLOWED_EXTENSIONS'] = ['png', 'jpg', 'jpeg', 'gif']
 
 
 @app.route('/')
@@ -75,6 +79,42 @@ def upload():
     return render_template('upload.html', form=form)
 
 
+# 批量上传文件
+@app.route('/multi-upload', methods=['GET', 'POST'])
+def multi_upload():
+    form = MultiUploadForm()
+    if request.method == 'POST':
+        filenames = []
+        # 验证CSRF令牌
+        try:
+            validate_csrf(form.csrf_token.data)
+        except ValidationError:
+            flash('CSRF token error.')
+            return redirect(url_for('multi_upload'))
+        # 检查文件是否存在
+        if 'photo' not in request.files:
+            flash('This field is required.')
+            return redirect(url_for('multi_upload'))
+        for f in request.files.getlist('photo'):
+            # 检查文件类型
+            if f and allowed_file(f.filename):
+                filename = random_filename(f.filename)
+                f.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+                filenames.append(filename)
+            else:
+                flash('Invalid file type.')
+                return redirect(url_for('multi_upload'))
+        flash('Upload success.')
+        session['filenames'] = filenames
+        return redirect(url_for('show_images'))
+    return render_template('upload.html', form=form)
+
+
+# 文件类型验证
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+
 # 随机生成文件名接受传入的文件名，返回随机文件名
 def random_filename(filename):
     ext = os.path.splitext(filename)[1]
@@ -104,11 +144,15 @@ def listdir(path, list_name):
 def show_images():
     path = app.config['UPLOAD_PATH']
     files = os.listdir(path)
-
     return render_template('uploaded.html', files=files)
 
 
+# 批量上传文件
+# 在客户端，通过在文件上传字段（type=file）加入multiple属性，就
+# 可以开启多选
 
+# 创建表单类时，可以直接使用WTForms提供的MultipleFileField字段
+# 实现，添加一个DataRequired验证器来确保包含文件
 
 
 
