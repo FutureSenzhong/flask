@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Length
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
+from wtforms.validators import DataRequired, Length, ValidationError
 
 
 # 如果你想手动编写HTML表单的代码，要注意表单字段的name属性
@@ -22,3 +22,14 @@ class MyBaseForm(FlaskForm):
 class HelloForm(MyBaseForm):
     name = StringField('Name', validators=[DataRequired()])
     submit = SubmitField()
+
+
+# 自定义验证器（行内验证器）
+class FortyTwoForm(FlaskForm):
+    answer = IntegerField('The Number')
+    submit = SubmitField()
+
+    @classmethod
+    def validate_answer(cls, field):
+        if field.data != 42:
+            raise ValidationError('Must be 42.')
