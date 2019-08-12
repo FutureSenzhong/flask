@@ -29,7 +29,7 @@ def index():
 @app.route('/login')
 def login():
     login_form = LoginForm()
-    return render_template('login.html', login_form=login_form)
+    return render_template('login.html', form=login_form)
 
 
 
