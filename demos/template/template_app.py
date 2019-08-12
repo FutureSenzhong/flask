@@ -73,7 +73,12 @@ def just_flash():
     return redirect(url_for('index'))
 
 
+# 自定义错误页面
+@app.errorhandler(404)
+def page_not_found(e):
 
+    # 错误处理函数接收异常对象作为参数
+    return render_template('errors/404.html'), 404
 
 
 
