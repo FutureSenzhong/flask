@@ -6,9 +6,17 @@
 </head>
 <body>
 <form method="post">
-{{ form.csrf_token }} <!-- 渲染CSRF令牌隐藏字段 -->
-{{ form.username.label }}{{ form.username }}<br>
-{{ form.password.label }}{{ form.password }}<br>
+{{ form.csrf_token }}
+{{ form.username.label }}<br>
+{{ form.username() }}<br>
+{% for message in form.username.errors %}
+<small class="error">{{ message }}</small><br>
+{% endfor %}
+{{ form.password.label }}<br>
+{{ form.password }}<br>
+{% for message in form.password.errors %}
+<small class="error">{{ message }}</small><br>
+{% endfor %}
 {{ form.remember }}{{ form.remember.label }}<br>
 {{ form.submit }}<br>
 </form>

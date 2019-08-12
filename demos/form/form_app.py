@@ -19,7 +19,7 @@ app.jinja_env.lstrip_blocks = True
 @app.route('/')
 def index():
     # 访问跟目录默认重定向到watchlist来显示数据
-    return render_template('form.html')@app.route('/')
+    return render_template('form.html')
 
 
 @app.route('/hello')
