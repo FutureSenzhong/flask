@@ -26,17 +26,18 @@ def index():
 # 进行签名，所以我们需要为程序设置密钥：
 # app.secret_key = 'secret string'
 
-@app.route('/login')
+
+# 验证表单数据
+# 客服端验证，可以实时提示用户
+# 服务端验证，无论是否客户端是否验证，都应该进行校验，保证数据的完整性
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     login_form = LoginForm()
+    if login_form.validate_on_submit():
+        username = login_form.username.data
+        flash('Welcome home, %s!' % username)
+        return redirect(url_for('index'))
     return render_template('login.html', form=login_form)
-
-
-
-
-
-
-
 
 
 
