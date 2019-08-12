@@ -11,3 +11,14 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(), Length(8, 128)])
     remember = BooleanField('Remember me', default=True)
     submit = SubmitField('Log in')
+
+
+# 设置内置错误消息语言为中文
+class MyBaseForm(FlaskForm):
+    class Meta:
+        locales = ['zh']
+
+
+class HelloForm(MyBaseForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField()

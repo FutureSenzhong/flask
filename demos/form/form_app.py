@@ -14,6 +14,8 @@ app.config["DEBUG"] = True
 app.jinja_env.trim_blocks = True
 # 删除Jinja2语句所在行之前的空格和制表符（tabs）
 app.jinja_env.lstrip_blocks = True
+# 让Flask-WTF使用WTForms内置的错误消息翻译
+app.config['WTF_I18N_ENABLED'] = False
 
 
 @app.route('/')
