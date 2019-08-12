@@ -2,6 +2,8 @@ import os
 
 from flask import Flask, request, redirect, url_for, abort, make_response, session, g, render_template, flash
 
+from demos.form.forms import LoginForm
+
 app = Flask(__name__, template_folder='./templates')
 app.secret_key = os.getenv('SECRET_KEY', 'dasdadadsasd')
 
@@ -18,7 +20,16 @@ def index():
     return render_template('form.html')
 
 
+# 使用Flask-WTF处理表单
+# Flask-WTF默认为每个表单启用CSRF保护，它会为我们自动生成和
+# 验证CSRF令牌。默认情况下，Flask-WTF使用程序密钥来对CSRF令牌
+# 进行签名，所以我们需要为程序设置密钥：
+# app.secret_key = 'secret string'
 
+@app.route('/login')
+def login():
+    login_form = LoginForm()
+    return render_template('login.html', login_form=login_form)
 
 
 
