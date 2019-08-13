@@ -106,7 +106,7 @@ def multi_upload():
                 return redirect(url_for('multi_upload'))
         flash('Upload success.')
         session['filenames'] = filenames
-        return redirect(url_for('show_images'))
+        return redirect(url_for('show_images2'))
     return render_template('upload.html', form=form)
 
 
@@ -139,13 +139,21 @@ def listdir(path, list_name):
     return list_name
 
 
-# 显示获取的图片
-@app.route('/show_images')
-def show_images():
+# 显图片的名称传给get_file()
+@app.route('/show_images1')
+def show_images1():
     path = app.config['UPLOAD_PATH']
     files = os.listdir(path)
     return render_template('uploaded.html', files=files)
 
+
+# 显图片的名称传给get_file()
+@app.route('/show_images2')
+def show_images2():
+    form = MultiUploadForm()
+    path = app.config['UPLOAD_PATH']
+    files = os.listdir(path)
+    return render_template('upload.html', files=files, form=form)
 
 # 批量上传文件
 # 在客户端，通过在文件上传字段（type=file）加入multiple属性，就

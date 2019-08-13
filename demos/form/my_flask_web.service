@@ -1,0 +1,13 @@
+[Unit]
+Description=IK DDoS Web Service
+After=network.target
+
+[Service]
+WorkingDirectory=/demos/form
+ExecStart=/demos/form/.venv/bin/gunicorn -c gun_config.py wsgi:form_app
+Type=simple
+Restart=always
+RestartSec=0s
+
+[Install]
+WantedBy=multi-user.target
