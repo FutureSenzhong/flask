@@ -6,12 +6,13 @@ from flask import Flask, request, redirect, url_for, abort, make_response, sessi
 from flask_wtf.csrf import validate_csrf
 from wtforms import ValidationError
 
-from demos.form.forms import LoginForm, UploadForm, MultiUploadForm
+from demos.form.forms import LoginForm, UploadForm, MultiUploadForm, RichTextForm, NewPostForm
 
 app = Flask(__name__, template_folder='./templates')
 # 实例化富文本编辑器
 from flask_ckeditor import CKEditor
 ckeditor = CKEditor(app)
+app.config['CKEDITOR_SERVE_LOCAL'] = True
 
 app.secret_key = os.getenv('SECRET_KEY', 'dasdadadsasd')
 app.config["DEBUG"] = True
@@ -169,11 +170,25 @@ def show_images2():
 
 # 使用Flask-CKEditor集成富文本编辑器
 
+@app.route('/ckeditor')
+def ckeditor():
+    form = RichTextForm()
+    return render_template('ckeditor.html', form=form)
 
 
-
-
-
+# 一个表单多个按钮实例
+@app.route('/two-submits', methods=['GET', 'POST'])
+def two_submits():
+    form = NewPostForm()
+    if form.validate_on_submit():
+        if form.save.data: # 保存按钮被单击
+            # save it...
+            flash('You click the "Save" button.')
+        elif form.publish.data: # 发布按钮被单击
+            # publish it...
+            flash('You click the "Publish" button.')
+            return redirect(url_for('index'))
+        return render_template('2submit.html', form=form)
 
 
 

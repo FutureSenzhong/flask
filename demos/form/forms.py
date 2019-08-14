@@ -1,6 +1,8 @@
+from flask_ckeditor import CKEditorField
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, MultipleFileField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, MultipleFileField, \
+    TextAreaField
 from wtforms.validators import DataRequired, Length, ValidationError
 
 
@@ -99,3 +101,17 @@ class MultiUploadForm(FlaskForm):
     # 批量上传
     photo = MultipleFileField('Upload Image', validators=[FileRequired(), FileAllowed(['jpg', 'jpeg', 'png', 'gif'])])
     submit = SubmitField()
+
+
+# 创建富文本表单类
+class RichTextForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired(), Length(1, 50)])
+    body = CKEditorField('Body', validators=[DataRequired()])
+    submit = SubmitField('Publish')
+
+
+class NewPostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired(), Length(1, 50)])
+    body = TextAreaField('Body', validators=[DataRequired()])
+    save = SubmitField('Save') # 保存按钮
+    publish = SubmitField('Publish') # 发布按钮
