@@ -9,6 +9,10 @@ from wtforms import ValidationError
 from demos.form.forms import LoginForm, UploadForm, MultiUploadForm
 
 app = Flask(__name__, template_folder='./templates')
+# 实例化富文本编辑器
+from flask_ckeditor import CKEditor
+ckeditor = CKEditor(app)
+
 app.secret_key = os.getenv('SECRET_KEY', 'dasdadadsasd')
 app.config["DEBUG"] = True
 
@@ -163,6 +167,7 @@ def show_images2():
 # 实现，添加一个DataRequired验证器来确保包含文件
 
 
+# 使用Flask-CKEditor集成富文本编辑器
 
 
 
