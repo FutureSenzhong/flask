@@ -191,6 +191,9 @@ def two_submits():
     return render_template('2submit.html', form=form)
 
 
+# 多表单处理
+# 单视图处理多表单，每个表单的submit按钮name属性不能相同，不然不能判断是哪个表单被提交
+# 多视图处理多表单，每个表单的submit按钮name属性不会冲突
 
 
 
