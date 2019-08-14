@@ -187,8 +187,8 @@ def two_submits():
         elif form.publish.data: # 发布按钮被单击
             # publish it...
             flash('You click the "Publish" button.')
-            return redirect(url_for('index'))
-        return render_template('2submit.html', form=form)
+        return redirect(url_for('index'))
+    return render_template('2submit.html', form=form)
 
 
 
