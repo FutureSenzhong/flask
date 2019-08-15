@@ -196,15 +196,21 @@ def about_me():
     return render_template('about-me.html')
 
 
-# 数据库迁移
+# 使用flask-sqlalchemy数据库迁移
+# flask db init 初始化数据库
+# flask db migrate -m '描述' 生成迁移文件
+# flask db upgrade 更新数据库
+# flask db downgrade  回退到upgrade操作前的数据库状态
 
 
+# 级联操作
+# 级联行为通过关系函数relationship（）的cascade参数设置
+# class Post(db.Model):
+#     comments = relationship('Comment', cascade='save-update, merge, delete')
 
 
-
-
-
-
+# 事件监听
+# isten_for（）装饰器，它可以用来注册事件回调函数
 
 
 
