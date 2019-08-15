@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>我的照片墙</h1>
-    <a href="">添加新的照片</a>
-
-    {% for name in files %}
-    <img src="{{ url_for('get_file', filename=name) }}" width="50px">
+    <div>
+        <h1>我的照片墙</h1>
+    </div>
+    <div>
+       <a href="">添加新的照片</a>
+    </div>
+    <div>
+        {% for name in files %}
+    <img src="{{ url_for('get_file', filename=name) }}" width="200px">
     {% endfor %}
+    </div>
 
 {% endblock %}

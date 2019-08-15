@@ -113,7 +113,7 @@ def edit_note(note_id):
 @app.route('/')
 def index():
     form = NewNoteForm()
-    per_page = int(request.args.get('per_page', 5))
+    per_page = int(request.args.get('per_page', 3))
     curr_page = int(request.args.get('page', 1))
     order_by = request.args.get('order_by', 'id')
     # table = db.session.query(Note)
@@ -227,5 +227,5 @@ if __name__ == '__main__':
 
 
 
-    app.run()
+    app.run(host='0.0.0.0')
 
