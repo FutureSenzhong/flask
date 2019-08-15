@@ -211,7 +211,10 @@ def about_me():
 
 # 事件监听
 # isten_for（）装饰器，它可以用来注册事件回调函数
-
+# @db.event.listens_for(Draft.body, 'set', named=True)
+# def increment_edit_time(**kwargs):
+#     if kwargs['target'].edit_time is not None:
+#     kwargs['target'].edit_time += 1
 
 
 
