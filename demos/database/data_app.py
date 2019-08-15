@@ -63,14 +63,19 @@ def create_database():
 
 # 笔记对象表单
 class NewNoteForm(FlaskForm):
-    title = StringField('title')
-    body = TextAreaField('Body', validators=[DataRequired()])
-    submit = SubmitField('Save')
+    title = StringField('标题')
+    body = TextAreaField('内容', validators=[DataRequired()])
+    submit = SubmitField('保存笔记')
 
 
 # 更新表单
 class EditNoteForm(NewNoteForm):
-    submit = SubmitField('Update')
+    submit = SubmitField('更新笔记')
+
+
+# 删除表单（使用表单用POST请求可以防范CSRF跨站伪造请求攻击）
+class DeleteNoteForm(FlaskForm):
+    submit = SubmitField('删除笔记')
 
 
 # 笔记处理视图函数
@@ -110,9 +115,24 @@ def edit_note(note_id):
     return render_template('edit_note.html', form=form)
 
 
+# 删除笔记
+@app.route('/delete/<int:note_id>', methods=['POST'])
+def delete_note(note_id):
+    form = DeleteNoteForm()
+    if form.validate_on_submit():
+        note = Note.query.get(note_id)  # 获取对应记录
+        db.session.delete(note)  # 删除记录
+        db.session.commit()  # 提交修改
+        flash('{}笔记删除成功！！！'.format(note.title))
+    else:
+        abort(400)
+    return redirect(url_for('index'))
+
+
 @app.route('/')
 def index():
     form = NewNoteForm()
+    d_form = DeleteNoteForm()
     per_page = int(request.args.get('per_page', 3))
     curr_page = int(request.args.get('page', 1))
     order_by = request.args.get('order_by', 'id')
@@ -121,7 +141,7 @@ def index():
     # notes = table.order_by(order_by).limit(per_page).offset(curr_page)
     pagination = Note.query.order_by(order_by).paginate(curr_page, per_page=per_page, error_out=False)
     notes = pagination.items
-    return render_template('index.html', notes=notes, form=form, pagination=pagination)
+    return render_template('index.html', notes=notes, form=form, d_form=d_form, pagination=pagination)
 
 
 # 我的照片墙
