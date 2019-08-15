@@ -4,6 +4,7 @@ import uuid
 from flask import Flask, request, redirect, url_for, abort,\
     make_response, session, g, render_template, flash, \
     get_flashed_messages, send_from_directory
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_wtf.csrf import validate_csrf
@@ -42,6 +43,9 @@ app.config['ALLOWED_EXTENSIONS'] = ['png', 'jpg', 'jpeg', 'gif']
 # 初始化数据库连接对象
 db = SQLAlchemy(app)
 
+# 实例化数据库迁移
+migrate = Migrate(app, db)  # 在db对象创建后调用
+
 
 # 定义一个数据模型
 class Note(db.Model):
@@ -51,6 +55,23 @@ class Note(db.Model):
 
     def __repr__(self):
         return '<Note %r>' % self.body
+
+
+# 一对多关系实例
+# 创建一个作者模型
+class Author(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True)
+    phone = db.Column(db.String(20))
+    articles = db.relationship('Article')
+
+
+# 创建一个文章模型，与作者属于多对一的关系
+class Article(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50), index=True)
+    body = db.Column(db.Text)
+    author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
 
 
 # 创建数据库方法
@@ -169,13 +190,40 @@ def listdir(path, list_name):
     return list_name
 
 
-
-
-
 # 关于我
 @app.route('/about_me')
 def about_me():
     return render_template('about-me.html')
+
+
+# 数据库迁移
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
