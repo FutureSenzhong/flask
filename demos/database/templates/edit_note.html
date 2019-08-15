@@ -8,6 +8,7 @@
 
 <form method="post">
     {{ form.csrf_token }}
+    {{ form_field(form.title) }}
     {{ form_field(form.body, rows=5, cols=50) }}
     {{ form.submit }}<br>
 </form>

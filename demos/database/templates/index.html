@@ -2,16 +2,16 @@
 
 {% block content %}
     <h1>Notebook</h1>
-    <a href="{{ url_for('new_note') }}">New Note</a>
+    <a href="{{ url_for('new_note') }}">添加新的笔记</a>
 
-    <h4>{{ notes|length }} notes:</h4>
+    <h4>笔记总数：{{ totals }}</h4>
     {% for note in notes %}
         <div class="note">
+            <p>{{ note.title }}</p>
             <p>{{ note.body }}</p>
-            <a class='btn' href="{{ url_for('edit_note', note_id=note.id) }}">Edit</a>
-            <form method="post" action="{{ url_for('delete_note', note_id=note.id) }}">
+            <a class='btn' href="{{ url_for('edit_note', note_id=note.id) }}">编辑笔记</a>
+            <form method="post" action="{{ url_for('edit_note', note_id=note.id) }}">
                 {{ form.csrf_token }}
-                {{ form.submit(class='btn') }}
             </form>
         </div>
     {% endfor %}
