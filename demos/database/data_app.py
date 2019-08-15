@@ -25,6 +25,19 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
 # 关闭数据库警告信息
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# 删除Jinja2语句后的第一个空行
+app.jinja_env.trim_blocks = True
+# 删除Jinja2语句所在行之前的空格和制表符（tabs）
+app.jinja_env.lstrip_blocks = True
+# 让Flask-WTF使用WTForms内置的错误消息翻译
+app.config['WTF_I18N_ENABLED'] = False
+# 设置请求报文的最大长度（设置文件上传的大小限制）
+app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024  # 限制为3M大小的文件
+# 设置上传文件路劲
+app.config['UPLOAD_PATH'] = os.path.join(app.root_path, 'uploads')
+# 设置文件类型
+app.config['ALLOWED_EXTENSIONS'] = ['png', 'jpg', 'jpeg', 'gif']
+
 
 # 初始化数据库连接对象
 db = SQLAlchemy(app)
@@ -111,8 +124,38 @@ def index():
     return render_template('index.html', notes=notes, form=form, pagination=pagination)
 
 
+# 我的照片墙
+@app.route('/my_photo')
+def my_photo():
+    path = app.config['UPLOAD_PATH']
+    files = os.listdir(path)
+    return render_template('my-photo.html', files=files)
 
 
+# 获取上传的文件
+@app.route('/uploads/<path:filename>')
+def get_file(filename):
+    return send_from_directory(app.config['UPLOAD_PATH'], filename)
+
+
+# 获取文件名
+def listdir(path, list_name):
+    for file in os.listdir(path):
+        file_path = os.path.join(path, file)
+        if os.path.isdir(file_path):
+            listdir(file_path, list_name)
+        elif os.path.splitext(file_path)[1] == '.jpg':
+            list_name.append(file_path)
+    return list_name
+
+
+
+
+
+# 关于我
+@app.route('/about_me')
+def about_me():
+    return render_template('about-me.html')
 
 
 
