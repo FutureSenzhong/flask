@@ -1,26 +1,28 @@
 import os
 import uuid
 
-from flask import Flask, request, redirect, url_for, abort, make_response, session, g, render_template, flash, \
+from flask import Flask, request, redirect, url_for, abort,\
+    make_response, session, g, render_template, flash, \
     get_flashed_messages, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_wtf.csrf import validate_csrf
 from sqlalchemy import and_, or_
-from wtforms import ValidationError, TextAreaField, SubmitField, StringField
+from wtforms import TextAreaField, SubmitField, StringField
 from wtforms.validators import DataRequired
 
-from demos.form.forms import LoginForm, UploadForm, MultiUploadForm, RichTextForm, NewPostForm
+from demos.database.page_utils import Pagination
 
 app = Flask(__name__, template_folder='./templates')
 
 app.secret_key = os.getenv('SECRET_KEY', 'dasdadadsasd')
-app.config["DEBUG"] = True
+app.config["DEBUG"] = False
 
 # 配置数据连接
 # SQLite的数据库URI在Linux或macOS系统下的斜线数量是4个；在
 # Windows系统下的URI中的斜线数量为3个。内存型数据库的斜线固定为3
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(app.root_path, 'data.db'))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+    'DATABASE_URL', 'sqlite:///' + os.path.join(app.root_path, 'data.db'))
 # 关闭数据库警告信息
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -96,12 +98,14 @@ def edit_note(note_id):
 def index():
     form = NewNoteForm()
     per_page = int(request.args.get('per_page', 5))
-    curr_page = int(request.args.get('curr_page', 1)) - 1
+    curr_page = int(request.args.get('page', 1))
     order_by = request.args.get('order_by', 'id')
-    table = db.session.query(Note)
-    totals = table.count()
-    notes = table.order_by(order_by).limit(per_page).offset(curr_page * per_page)
-    return render_template('index.html', notes=notes, form=form, totals=totals)
+    # table = db.session.query(Note)
+    # totals = table.count()
+    # notes = table.order_by(order_by).limit(per_page).offset(curr_page)
+    pagination = Note.query.order_by(order_by).paginate(curr_page, per_page=per_page, error_out=False)
+    notes = pagination.items
+    return render_template('index.html', notes=notes, form=form, pagination=pagination)
 
 
 

@@ -1,0 +1,62 @@
+{% macro my_paginate(data,url) %}
+    {% if data %}
+    <nav aria-label="Pgae navigation">
+        <ul class="pagination">
+            <li>
+                <a href="{{url_for(url,page=1)}}" aria-label="First">
+                    <span aria-hidden="true">首页</span>
+                </a>
+            </li>
+
+            {% if data.has_prev and data.page > 1 %}
+                <li>
+                    <a href="{{url_for(url,page=data.prev_num)}}" aria-label="Previous">
+                        <span aria-hidden="true">上一页</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="disabled"><a>上一页</a></li>
+            {% endif %}
+
+            {% for foo in data.iter_pages() %}
+                {% if foo == data.page %}
+                    <li class="active"><a>{{foo}}</a></li>
+                {% else %}
+                    <li><a href="{{url_for(url,page=foo)}}">{{foo}}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if data.has_next and data.page < data.pages %}
+                <li>
+                    <a href="{{url_for(url,page=data.next_num)}}" aria-label="Next">
+                        <span aria-hidden="true">下一页</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="disabled"><a>下一页</a></li>
+            {% endif %}
+    {% endif %}
+            {% if data.pages %}
+            <!-- 判断没有任何用户创建时尾页的情况 -->
+            <li>
+                {% if data.pages != 1 %}
+                <a href="{{url_for(url,page=data.pages)}}" aria-label="Last">
+                    <span aria-hidden="true">尾页</span>
+                </a>
+                {% else %}
+                <a aria-label="Last">
+                    <span aria-hidden="true">尾页</span>
+                </a>
+                {% endif %}
+            </li>
+            {% else %}
+            <li>
+                <a class="disabled" aria-label="Last">
+                    <span aria-hidden="true">尾页</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+{% endmacro %}

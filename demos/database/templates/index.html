@@ -4,7 +4,7 @@
     <h1>Notebook</h1>
     <a href="{{ url_for('new_note') }}">添加新的笔记</a>
 
-    <h4>笔记总数：{{ totals }}</h4>
+    <h4>笔记总数：{{ pagination.total }}</h4>
     {% for note in notes %}
         <div class="note">
             <p>{{ note.title }}</p>
@@ -15,4 +15,11 @@
             </form>
         </div>
     {% endfor %}
+{% endblock %}
+
+
+{% block fenye %}
+{% import 'pages.html' as pg %}
+{{pg.my_paginate(pagination,'index')}}
+
 {% endblock %}
