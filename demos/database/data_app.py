@@ -11,7 +11,6 @@ from sqlalchemy import and_, or_
 from wtforms import TextAreaField, SubmitField, StringField
 from wtforms.validators import DataRequired
 
-from demos.database.page_utils import Pagination
 
 app = Flask(__name__, template_folder='./templates')
 
@@ -75,7 +74,7 @@ def new_note():
         notes = Note(title=title, body=body)
         db.session.add(notes)
         db.session.commit()
-        flash('Your note is saved.')
+        flash('标题为“{}”笔记保存成功！'.format(title))
         # 重定向到主页,会发起一个GET请求
         return redirect(url_for('index'))
     return render_template('new_note.html', form=form)
@@ -86,11 +85,15 @@ def edit_note(note_id):
     form = EditNoteForm()
     note = Note.query.get(note_id)
     if form.validate_on_submit():
+        note.title = form.title.data
         note.body = form.body.data
         db.session.commit()
-        flash('Your note is updated.')
+        flash('你的笔记“{}”更新成功.'.format(note.title))
         return redirect(url_for('index'))
+
+    # 将存在在笔记内容显示在页面上
     form.body.data = note.body
+    form.title.data = note.title
     return render_template('edit_note.html', form=form)
 
 

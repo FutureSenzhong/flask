@@ -3,7 +3,7 @@
 <head>
     {% block head %}
     <meta charset="utf-8">
-    <title>{% block title %}Database - HelloFlask{% endblock %}</title>
+    <title>{% block title %}邓森中的云笔记本{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     {% block styles %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css' ) }}">
@@ -13,7 +13,7 @@
 <body>
     <nav>
         <ul>
-            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('index') }}">主页</a></li>
         </ul>
     </nav>
 
@@ -29,9 +29,7 @@
 
 <footer>
     {% block footer %}
-    <small> &copy; 2018 <a href="http://greyli.com" title="Written by SenZhong">Grey Li</a> /
-                <a href="https://github.com/greyli/helloflask" title="Fork me on GitHub">GitHub</a> /
-                <a href="http://pyeden.com.com" title="A HelloFlask project">sayhello</a>
+    <small> &copy; 2019 <a href="http://pyeden.com" title="Written by SenZhong">SenZhong</a> /
             </small>
     {% endblock %}
 </footer>
