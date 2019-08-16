@@ -1,1 +1,2 @@
-FLASK_APP = data_app.py
+FLASK_ENV = "test"
+FLASK_DEBUG = False

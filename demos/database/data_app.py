@@ -4,7 +4,8 @@ import uuid
 from flask import Flask, request, redirect, url_for, abort,\
     make_response, session, g, render_template, flash, \
     get_flashed_messages, send_from_directory
-from flask_email.backends.console import Mail
+
+from flask_mail import Message, Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -12,7 +13,6 @@ from flask_wtf.csrf import validate_csrf
 from sqlalchemy import and_, or_
 from wtforms import TextAreaField, SubmitField, StringField
 from wtforms.validators import DataRequired
-
 
 app = Flask(__name__, template_folder='./templates')
 
@@ -59,7 +59,7 @@ app.config.update(
     MAIL_PASSWORD=os.getenv('MAIL_PASSWORD'),
     MAIL_DEFAULT_SENDER=('SZ', os.getenv('MAIL_USERNAME')),
     )
-
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:123456@10.2.3.55:3306/test?charset=utf8"
 # 初始化数据库连接对象
 db = SQLAlchemy(app)
 # 初始化邮件对象
@@ -73,7 +73,7 @@ migrate = Migrate(app, db)  # 在db对象创建后调用
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
-    title = db.Column(db.String)
+    title = db.Column(db.String(100))
 
     def __repr__(self):
         return '<Note %r>' % self.body
@@ -271,7 +271,7 @@ def about_me():
 
 if __name__ == '__main__':
     # 创建数据库
-    # create_database()
+    create_database()
     # 添加数据
     # note1 = Note(body='remember Sammy Jankis')
     # note2 = Note(body='SHAVE')
