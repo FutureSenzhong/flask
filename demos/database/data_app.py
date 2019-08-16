@@ -1,5 +1,7 @@
 import os
 import uuid
+from collections import namedtuple
+from configparser import ConfigParser
 
 from flask import Flask, request, redirect, url_for, abort,\
     make_response, session, g, render_template, flash, \
@@ -10,9 +12,11 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_wtf.csrf import validate_csrf
+from redis import StrictRedis
 from sqlalchemy import and_, or_
 from wtforms import TextAreaField, SubmitField, StringField
 from wtforms.validators import DataRequired
+
 
 app = Flask(__name__, template_folder='./templates')
 
@@ -59,7 +63,6 @@ app.config.update(
     MAIL_PASSWORD=os.getenv('MAIL_PASSWORD'),
     MAIL_DEFAULT_SENDER=('SZ', os.getenv('MAIL_USERNAME')),
     )
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:123456@10.2.3.55:3306/test?charset=utf8"
 # 初始化数据库连接对象
 db = SQLAlchemy(app)
 # 初始化邮件对象
