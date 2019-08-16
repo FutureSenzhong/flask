@@ -4,6 +4,7 @@ import uuid
 from flask import Flask, request, redirect, url_for, abort,\
     make_response, session, g, render_template, flash, \
     get_flashed_messages, send_from_directory
+from flask_email.backends.console import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -40,8 +41,29 @@ app.config['UPLOAD_PATH'] = os.path.join(app.root_path, 'uploads')
 app.config['ALLOWED_EXTENSIONS'] = ['png', 'jpg', 'jpeg', 'gif']
 
 
+# SSL/TLS加密：
+# MAIL_USE_SSL = True
+# MAIL_PORT = 465
+
+
+# STARTTLS加密
+# MAIL_USE_TLS = True
+# MAIL_PORT = 587
+
+# 邮件配置
+app.config.update(
+    MAIL_SERVER=os.getenv('MAIL_SERVER'),
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USERNAME=os.getenv('MAIL_USERNAME'),
+    MAIL_PASSWORD=os.getenv('MAIL_PASSWORD'),
+    MAIL_DEFAULT_SENDER=('SZ', os.getenv('MAIL_USERNAME')),
+    )
+
 # 初始化数据库连接对象
 db = SQLAlchemy(app)
+# 初始化邮件对象
+mail = Mail(app)
 
 # 实例化数据库迁移
 migrate = Migrate(app, db)  # 在db对象创建后调用
