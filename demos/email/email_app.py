@@ -60,16 +60,22 @@ mail = Mail(app)
 migrate = Migrate(app, db)  # 在db对象创建后调用
 
 
+@app.route('/')
+def send_mail():
+    message = Message(subject='Hello, World!',
+                      recipients=['1019217919@qq.com>'],
+                      body='Across the Great Wall we can reach every corner in the world.')
+
+    mail.send(message)
+    return '发送成功', True
 
 
-message = Message(subject='Hello, World!',
-                  recipients=['Zorn<zorn@example.com>'],
-                  body='Across the Great Wall we can reach every corner in the world.')
-
-
-
-
-
+# 异步发送邮件
+# 因为Flask-Mail的send（）方法内部的调用逻辑中使用了current_app
+# 变量，而这个变量只在激活的程序上下文中才存在，这里在后台线程调
+# 用发信函数，但是后台线程并没有程序上下文存在。为了正常实现发信
+# 功能，我们传入程序实例app作为参数，并调用app.app_context（）手动
+# 激活程序上下文
 
 
 
@@ -95,5 +101,6 @@ message = Message(subject='Hello, World!',
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5004)
+
 
