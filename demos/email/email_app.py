@@ -77,7 +77,7 @@ def send_mail():
 # 功能，我们传入程序实例app作为参数，并调用app.app_context（）手动
 # 激活程序上下文
 
-
+# say hello flask over ！
 
 
 
